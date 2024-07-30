@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.scaffolding.optimization.Entities.Role;
 import com.scaffolding.optimization.Entities.User;
 
 import lombok.AllArgsConstructor;
@@ -18,15 +19,10 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<String> authorities = List.of("admin", "medical");
-        List<String> roles = List.of(RoleConfig.ROLE_PREFIX + authorities.get(0), RoleConfig.ROLE_PREFIX + authorities.get(1));
+        Role authorities = userEntity.getRole();
+        List<String> roles = List.of(RoleConfig.ROLE_PREFIX + authorities.getName());
 
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
-        
-        authorities.forEach(authority -> {
-            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
-            simpleGrantedAuthorities.add(simpleGrantedAuthority);
-        });
 
         roles.forEach(role -> {
             SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role);
@@ -47,7 +43,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public String getEmail() {
-        return userEntity.getEmail();
+        return userEntity.getUserName();
     }
 
     public int getId() {

@@ -1,6 +1,7 @@
 package com.scaffolding.optimization.Security;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scaffolding.optimization.Entities.Response.AuthCredentials;
+import com.scaffolding.optimization.Entities.Response.AuthResponse;
+import com.scaffolding.optimization.Entities.Response.ResponseApi;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -55,14 +58,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             claims.put("authorities", userDetails.getAuthorities());
             claims.put("email", userDetails.getEmail());
 
-            String token = jwtUtil.createToken(claims, userDetails.getEmail());
+            String token = jwtUtil.createToken(claims, userDetails.getUsername());
 
+            String dateExpiredFormated = LocalDateTime.now().plusHours(10).toString();
 
-            response.getWriter().write(new ObjectMapper().writeValueAsString(new HashMap<String, String>() {
-                {
-                    put("token", token);
-                    put("email", userDetails.getUsername());
-                }
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setId(userDetails.getId());
+            authResponse.setToken(token);
+            authResponse.setUserName(userDetails.getEmail());
+            authResponse.setEmail(userDetails.getUsername());
+            authResponse.setAuthorities(userDetails.getAuthorities());
+            authResponse.setExpirationDate(dateExpiredFormated);
+
+            response.getWriter()
+                .write(new ObjectMapper().writeValueAsString(new ResponseApi<AuthResponse>() {
+                    {
+                        setData(authResponse);
+                        setMessage("User authenticated successfully");
+                        setSuccess(true);
+                    }
             }));
             response.setContentType("application/json");
             response.getWriter().flush();
