@@ -1,6 +1,6 @@
 package com.scaffolding.optimization.Swagger.Shemas;
 
-import com.scaffolding.optimization.Entities.Response.ResponseApi;
+import com.scaffolding.optimization.database.Entities.Response.ResponseApi;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
