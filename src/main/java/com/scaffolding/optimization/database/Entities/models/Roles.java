@@ -1,15 +1,21 @@
 package com.scaffolding.optimization.database.Entities.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@DynamicUpdate
+@DynamicInsert
 @Entity
 @Table(name = "roles")
-public class Roles {
+public class Roles extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -22,8 +28,6 @@ public class Roles {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "is_deleted")
-    private Boolean deleted;
 
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "role")
     private List<RolesModules> rolesModules = new ArrayList<>();

@@ -1,14 +1,20 @@
 package com.scaffolding.optimization.database.Entities.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
+@DynamicUpdate
+@DynamicInsert
 @Entity
 @Table(name = "warehouses")
-public class Warehouses {
+public class Warehouses extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -23,9 +29,6 @@ public class Warehouses {
 
     @Column(name = "latitude")
     private BigDecimal latitude;
-
-    @Column(name = "is_deleted")
-    private Boolean deleted;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")

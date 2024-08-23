@@ -1,12 +1,18 @@
 package com.scaffolding.optimization.database.Entities.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-@Data
+@Getter
+@Setter
+@DynamicUpdate
+@DynamicInsert
 @Entity
 @Table(name = "suppliers")
-public class Suppliers {
+public class Suppliers extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -22,7 +28,10 @@ public class Suppliers {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "is_deleted")
-    private Boolean deleted;
+    @Column(name = "nit")
+    private String nit;
+
+    @Column(name = "cui")
+    private String cui;
 
 }

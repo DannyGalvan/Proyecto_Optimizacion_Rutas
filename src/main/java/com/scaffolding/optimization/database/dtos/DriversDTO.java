@@ -17,4 +17,6 @@ public class DriversDTO {
 
     private Long userId;
 
+    private UsersDTO user;
+
 }

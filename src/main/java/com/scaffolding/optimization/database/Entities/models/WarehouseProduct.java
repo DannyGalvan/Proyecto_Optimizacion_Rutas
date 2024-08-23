@@ -13,16 +13,13 @@ public class WarehouseProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouses warehouse;
 
-
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Products product;
-
 
     @Column(name = "partial_stock", nullable = false)
     private Long partialStock;

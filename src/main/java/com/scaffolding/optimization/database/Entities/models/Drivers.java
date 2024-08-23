@@ -1,9 +1,15 @@
 package com.scaffolding.optimization.database.Entities.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-@Data
+@Getter
+@Setter
+@DynamicUpdate
+@DynamicInsert
 @Entity
 @Table(name = "drivers")
 public class Drivers {
@@ -18,9 +24,6 @@ public class Drivers {
 
     @Column(name = "phone")
     private String phone;
-
-    @Column(name = "is_deleted")
-    private Boolean deleted;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id", referencedColumnName = "id")

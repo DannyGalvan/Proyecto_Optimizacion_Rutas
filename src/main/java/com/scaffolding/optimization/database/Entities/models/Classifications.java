@@ -1,12 +1,19 @@
 package com.scaffolding.optimization.database.Entities.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-@Data
+
+@Getter
+@Setter
+@DynamicUpdate
+@DynamicInsert
 @Entity
 @Table(name = "classifications")
-public class Classifications {
+public class Classifications extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -18,8 +25,5 @@ public class Classifications {
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "is_deleted")
-    private Boolean deleted;
 
 }
