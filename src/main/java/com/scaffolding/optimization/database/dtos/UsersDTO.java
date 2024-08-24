@@ -1,6 +1,8 @@
 package com.scaffolding.optimization.database.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.scaffolding.optimization.database.Entities.models.Roles;
 import lombok.Data;
 
 @Data
@@ -9,11 +11,12 @@ public class UsersDTO {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private String alias;
 
-    private Long roleId;
+    private Roles role;
 
     private Boolean deleted;
 

@@ -6,16 +6,17 @@ import com.scaffolding.optimization.QuickDropUtils;
 import com.scaffolding.optimization.Services.CustomerService;
 import com.scaffolding.optimization.Services.RoleService;
 import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
+import com.scaffolding.optimization.database.Entities.models.Addresses;
 import com.scaffolding.optimization.database.Entities.models.Customers;
 import com.scaffolding.optimization.database.Entities.models.Roles;
 import com.scaffolding.optimization.database.Entities.models.Users;
 import com.scaffolding.optimization.database.dtos.CustomersDTO;
+import com.scaffolding.optimization.database.repositories.AddressesRepository;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -24,7 +25,8 @@ public class QuickDropCustomerProcessingController {
 
     private final RoleService roleService;
     private final CustomerService customerService;
-    private ResponseWrapper responseWrapper;
+    private  ResponseWrapper responseWrapper;
+
 
     public QuickDropCustomerProcessingController(RoleService roleServiceCRUD, CustomerService customerService) {
         this.roleService = roleServiceCRUD;
@@ -39,7 +41,6 @@ public class QuickDropCustomerProcessingController {
 
         userEntity.setAlias(customerDTO.getUser().getAlias());
         userEntity.setEmail(customerDTO.getUser().getEmail());
-
 
         if (ObjectUtils.isEmpty(customerDTO.getUser().getPassword())) {
             String password = QuickDropUtils.generateRandomPassword();
@@ -60,5 +61,11 @@ public class QuickDropCustomerProcessingController {
         customerService.execute(customerEntity, QuickDropConstants.operationTypes.CREATE.getOperationType());
         responseWrapper.setSuccessful(true);
         return ResponseEntity.ok(responseWrapper);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ResponseWrapper> getAllCustomers() {
+        return ResponseEntity.ok(customerService.execute
+                (null, QuickDropConstants.operationTypes.READ.getOperationType()));
     }
 }

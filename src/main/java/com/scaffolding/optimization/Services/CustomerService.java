@@ -6,7 +6,10 @@ import com.scaffolding.optimization.api.Controllers.CrudServiceProcessingControl
 import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
 import com.scaffolding.optimization.database.Entities.models.Customers;
 import com.scaffolding.optimization.database.dtos.CustomersDTO;
+import com.scaffolding.optimization.database.repositories.AddressesRepository;
 import com.scaffolding.optimization.database.repositories.CustomersRepository;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -14,20 +17,27 @@ import java.util.Optional;
 public class CustomerService extends CrudServiceProcessingController<Customers> {
 
     private final CustomersRepository customerRepository;
+
     private final CustomerMapper customerMapper;
     private final UserService userService;
+
+    private final AddressesRepository addressesRepository;
     private ResponseWrapper responseWrapper;
 
-    public CustomerService(CustomersRepository customerRepository, CustomerMapper customerMapper, UserService userService) {
+    public CustomerService(CustomersRepository customerRepository, CustomerMapper customerMapper, UserService userService, AddressesRepository addressesRepository) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
         this.userService = userService;
+        this.addressesRepository = addressesRepository;
     }
 
     @Override
     public ResponseWrapper executeCreation(Customers entity) {
         responseWrapper = new ResponseWrapper();
-        customerRepository.save(entity);
+        userService.executeCreation(entity.getUser());
+        Customers customerCreated = customerRepository.save(entity);
+        entity.getAddresses().forEach(address -> address.setCustomer(customerCreated));
+        addressesRepository.saveAll(entity.getAddresses());
         responseWrapper.setSuccessful(true);
         responseWrapper.setMessage("cliente creado exitosamente");
         return responseWrapper;

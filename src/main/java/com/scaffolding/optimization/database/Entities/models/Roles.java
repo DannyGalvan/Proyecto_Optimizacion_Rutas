@@ -1,5 +1,6 @@
 package com.scaffolding.optimization.database.Entities.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +29,7 @@ public class Roles extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "role")
     private List<RolesModules> rolesModules = new ArrayList<>();
 

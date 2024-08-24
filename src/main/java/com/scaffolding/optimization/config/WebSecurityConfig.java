@@ -55,10 +55,10 @@ public class WebSecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(request -> permitAllRequestMatchers().stream()
-                            .anyMatch(matcher -> matcher.matches(request))).permitAll();
+                            .anyMatch(matcher -> matcher.matches(request))).permitAll()
+                            .requestMatchers(request -> authenticatedRequestMatchers().stream()
+                            .anyMatch(matcher -> matcher.matches(request))).authenticated();
 
-                    auth.requestMatchers(request -> authenticatedRequestMatchers().stream()
-                            .anyMatch(matcher -> matcher.matches(request))).authenticated();                                            
                 })
                 .sessionManagement(
                         sessionManagement -> sessionManagement.sessionCreationPolicy(
@@ -131,6 +131,8 @@ public class WebSecurityConfig {
 
     private List<RequestMatcher> permitAllRequestMatchers() {
         return List.of(
+                new AntPathRequestMatcher("/api/v1/customer/register", "POST"),
+                new AntPathRequestMatcher("/api/v1/customer/all", "GET"),
                 new AntPathRequestMatcher("/doc/**", "GET"),
                 new AntPathRequestMatcher("/v3/api-docs/**", "GET"),
                 new AntPathRequestMatcher("/swagger-ui/**", "GET"),                

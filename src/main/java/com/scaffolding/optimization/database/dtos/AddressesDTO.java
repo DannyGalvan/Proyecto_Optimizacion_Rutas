@@ -1,6 +1,7 @@
 package com.scaffolding.optimization.database.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ public class AddressesDTO {
 
     private Boolean deleted;
 
+    @JsonIgnore
     private Long idCustomer;
 
 }
