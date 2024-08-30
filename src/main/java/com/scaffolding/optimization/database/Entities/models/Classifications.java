@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -25,5 +27,8 @@ public class Classifications extends BaseEntity {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "classification")
+    private List<Products> products;
 
 }

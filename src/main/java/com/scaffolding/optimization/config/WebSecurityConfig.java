@@ -58,7 +58,6 @@ public class WebSecurityConfig {
                             .anyMatch(matcher -> matcher.matches(request))).permitAll()
                             .requestMatchers(request -> authenticatedRequestMatchers().stream()
                             .anyMatch(matcher -> matcher.matches(request))).authenticated();
-
                 })
                 .sessionManagement(
                         sessionManagement -> sessionManagement.sessionCreationPolicy(
@@ -133,6 +132,8 @@ public class WebSecurityConfig {
         return List.of(
                 new AntPathRequestMatcher("/api/v1/customer/register", "POST"),
                 new AntPathRequestMatcher("/api/v1/customer/all", "GET"),
+                new AntPathRequestMatcher("/api/v1/classification/all", "GET"),
+                new AntPathRequestMatcher("/api/v1/gas-price/all", "POST"),
                 new AntPathRequestMatcher("/doc/**", "GET"),
                 new AntPathRequestMatcher("/v3/api-docs/**", "GET"),
                 new AntPathRequestMatcher("/swagger-ui/**", "GET"),                

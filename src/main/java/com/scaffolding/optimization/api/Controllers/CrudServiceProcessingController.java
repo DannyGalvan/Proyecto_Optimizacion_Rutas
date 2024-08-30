@@ -1,6 +1,6 @@
 package com.scaffolding.optimization.api.Controllers;
 
-import com.scaffolding.optimization.database.Entities.Response.ResponseApi;
+
 import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
 
 public abstract  class CrudServiceProcessingController<T> implements QuickDropProcessingController<T> {
@@ -17,29 +17,6 @@ public abstract  class CrudServiceProcessingController<T> implements QuickDropPr
 
     public abstract ResponseWrapper executeReadAll();
 
-    protected abstract ResponseWrapper validateForCreation(T entity);
-
-    protected abstract ResponseWrapper validateForUpdate(T entity);
-
-    protected abstract ResponseWrapper validateForDelete(T entity);
-
-    protected abstract ResponseWrapper validateForRead(T entity);
-
-    @Override
-    public ResponseWrapper validate(T entity, String operation) {
-
-        if (entity == null) {
-            ResponseApi<T> responseWrapper = new ResponseApi<T>();
-        }
-
-        return switch (operation) {
-            case CREATE_OPERATION -> validateForCreation(entity);
-            case UPDATE_OPERATION -> validateForUpdate(entity);
-            case DELETE_OPERATION -> validateForDelete(entity);
-            case READ_OPERATION -> validateForRead(entity);
-            default -> throw new RuntimeException("Operation not found");
-        };
-    }
 
     @Override
     public ResponseWrapper execute(T entity, String operation) {

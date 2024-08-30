@@ -15,7 +15,7 @@ public class QuickDropGasTypeProcessingController {
         this.gasTypeService = gasTypeService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseWrapper getGasPrice() {
         return gasTypeService.getAllGasTypes();
     }

@@ -6,17 +6,14 @@ import com.scaffolding.optimization.QuickDropUtils;
 import com.scaffolding.optimization.Services.CustomerService;
 import com.scaffolding.optimization.Services.RoleService;
 import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
-import com.scaffolding.optimization.database.Entities.models.Addresses;
 import com.scaffolding.optimization.database.Entities.models.Customers;
 import com.scaffolding.optimization.database.Entities.models.Roles;
 import com.scaffolding.optimization.database.Entities.models.Users;
 import com.scaffolding.optimization.database.dtos.CustomersDTO;
-import com.scaffolding.optimization.database.repositories.AddressesRepository;
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -34,8 +31,8 @@ public class QuickDropCustomerProcessingController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseWrapper> register(@RequestBody CustomersDTO customerDTO) {
-
+    public ResponseEntity<ResponseWrapper> register(@Valid @RequestBody CustomersDTO customerDTO) {
+       new ResponseWrapper();
         Users userEntity = new Users();
         Roles role = roleService.findByName(QuickDropConstants.QuickDropRoles.CUSTOMER.getRole());
 
@@ -52,12 +49,6 @@ public class QuickDropCustomerProcessingController {
         Customers customerEntity = customerService.mapToEntityCustomer(customerDTO);
         customerEntity.setUser(userEntity);
 
-        responseWrapper = customerService.validate(customerEntity, QuickDropConstants.operationTypes.CREATE.getOperationType());
-
-        if (!responseWrapper.getErrors().isEmpty()) {
-            return ResponseEntity.badRequest().body(responseWrapper);
-        }
-
         customerService.execute(customerEntity, QuickDropConstants.operationTypes.CREATE.getOperationType());
         responseWrapper.setSuccessful(true);
         return ResponseEntity.ok(responseWrapper);
@@ -67,5 +58,11 @@ public class QuickDropCustomerProcessingController {
     public ResponseEntity<ResponseWrapper> getAllCustomers() {
         return ResponseEntity.ok(customerService.execute
                 (null, QuickDropConstants.operationTypes.READ.getOperationType()));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseWrapper> updateCustomer(@Valid @RequestBody CustomersDTO customerDTO) {
+        return ResponseEntity.ok(customerService.execute(customerService.mapToEntityCustomer(customerDTO),
+                QuickDropConstants.operationTypes.UPDATE.getOperationType()));
     }
 }

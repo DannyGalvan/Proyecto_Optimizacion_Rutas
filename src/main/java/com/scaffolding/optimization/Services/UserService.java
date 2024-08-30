@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.scaffolding.optimization.QuickDropUtils;
+
 import com.scaffolding.optimization.api.Controllers.CrudServiceProcessingController;
 import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
 import com.scaffolding.optimization.database.Entities.models.Users;
@@ -81,64 +81,6 @@ public class UserService extends CrudServiceProcessingController<Users> implemen
 
     @Override
     public ResponseWrapper executeReadAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected ResponseWrapper validateForCreation(Users entity) {
-        responseWrapper = new ResponseWrapper();
-
-        if (!QuickDropUtils.verifyEmailFormat(entity.getEmail())) {
-            responseWrapper.addError("email","el formato del correo es invalido");
-        }
-
-        if (entity.getEmail() == null) {
-            responseWrapper.addError("email","email es requerido");
-        }
-
-        if (entity.getPassword() == null) {
-            responseWrapper.addError("password","password es requerido");
-        }
-
-        if (entity.getRole() == null) {
-            responseWrapper.addError("role","role es requerido");
-        }
-
-        Users  userEntityFound = userRepository.findByEmail(entity.getEmail());
-        if (userEntityFound != null) {
-            responseWrapper.addError("email","el correo ya existe");
-        }
-
-        return responseWrapper;
-    }
-
-    @Override
-    protected ResponseWrapper validateForUpdate(Users entity) {
-        responseWrapper = new ResponseWrapper();
-        if (entity.getEmail() == null) {
-            responseWrapper.addError("email","email es requerido");
-        }
-
-        if (!QuickDropUtils.verifyEmailFormat(entity.getEmail())) {
-            responseWrapper.addError("email","formato del email no es valido");
-        }
-
-        Users  userEntityFound = userRepository.findByEmail(entity.getEmail());
-        if (userEntityFound != null) {
-            if (!userEntityFound.getId().equals(entity.getId())) {
-                responseWrapper.addError("email","el correo ya existe");
-            }
-        }
-        return responseWrapper;
-    }
-
-    @Override
-    protected ResponseWrapper validateForDelete(Users entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected ResponseWrapper validateForRead(Users entity) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

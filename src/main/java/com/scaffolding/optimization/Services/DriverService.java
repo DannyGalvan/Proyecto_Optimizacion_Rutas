@@ -76,48 +76,4 @@ public class DriverService extends CrudServiceProcessingController<Drivers> {
 
         return responseWrapper;
     }
-
-    @Override
-    protected ResponseWrapper validateForCreation(Drivers entity) {
-        responseWrapper = new ResponseWrapper();
-
-        if (entity.getName() == null) {
-            responseWrapper.addError("name", "name is required");
-        }
-
-        if (entity.getPhone() == null) {
-            responseWrapper.addError("phone", "phone is required");
-        }
-
-        return responseWrapper;
-    }
-
-    @Override
-    protected ResponseWrapper validateForUpdate(Drivers entity) {
-      responseWrapper = new ResponseWrapper();
-
-        Drivers driversEntityFound = driverRepository.findByPhone(entity.getPhone());
-
-        if (driversEntityFound != null) {
-            responseWrapper.addError("phone", "phone already exists");
-        }
-
-        return responseWrapper;
-    }
-
-    @Override
-    protected ResponseWrapper validateForDelete(Drivers entity) {
-       responseWrapper = new ResponseWrapper();
-
-        if (entity.getId() == null) {
-            responseWrapper.addError("id", "el id es requerido");
-        }
-
-        return responseWrapper;
-    }
-
-    @Override
-    protected ResponseWrapper validateForRead(Drivers entity) {
-        return null;
-    }
 }
