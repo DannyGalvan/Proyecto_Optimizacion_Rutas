@@ -51,6 +51,6 @@ public class SupplierService extends CrudServiceProcessingController<Suppliers> 
     }
 
     public boolean existsByNames(String name) {
-        return suppliersRepository.findByName(name);
+        return suppliersRepository.findByName(name).isPresent();
     }
 }
