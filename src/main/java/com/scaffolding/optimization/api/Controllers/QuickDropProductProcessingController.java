@@ -20,12 +20,13 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 public class QuickDropProductProcessingController {
 
-   private final DTOParser dtoParser;
+    private final DTOParser dtoParser;
     private final ProductService productService;
 
     private final SuppliersRepository suppliersRepository;
 
-    public QuickDropProductProcessingController(DTOParser dtoParser, ProductService productService, SuppliersRepository suppliersRepository) {
+    public QuickDropProductProcessingController(DTOParser dtoParser, ProductService productService,
+            SuppliersRepository suppliersRepository) {
         this.dtoParser = dtoParser;
         this.productService = productService;
         this.suppliersRepository = suppliersRepository;
@@ -52,13 +53,13 @@ public class QuickDropProductProcessingController {
                     .toList();
 
             if (validProducts.isEmpty()) {
-                return ResponseEntity.badRequest().body(new ResponseWrapper(false, "the products already exist or the supplier does not exist", null));
+                return ResponseEntity.badRequest().body(
+                        new ResponseWrapper(false, "the products already exist or the supplier does not exist", null));
             }
 
             validProducts.stream()
                     .map(productService::mapDtoToEntity)
                     .forEach(productService::executeCreation);
-
 
             return ResponseEntity.ok(new ResponseWrapper(true, "Products uploaded successfully",
                     Collections.singletonList("Numbers of products uploaded: " + validProducts.size())));
@@ -70,10 +71,26 @@ public class QuickDropProductProcessingController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<ResponseWrapper> filterProducts(@RequestParam String query) {
-        String formedQuery = "SELECT p FROM Products " + query;
+    public ResponseEntity<ResponseWrapper> filterProducts(@RequestParam(required = false) String query) {
+        String formedQuery = "SELECT p FROM Products p";
+
+        if (query == null) {
+            return ResponseEntity.ok(new ResponseWrapper(true, "Products filtered successfully",
+                    productService.executeDynamicQuery(formedQuery)));
+        }
+
+        if (query.isBlank() || query.isEmpty()) {
+            return ResponseEntity.ok(new ResponseWrapper(true, "Products filtered successfully",
+                    productService.executeDynamicQuery(formedQuery)));
+        }
+
+        formedQuery += " WHERE " + query;
+
+        String replacedQuery = formedQuery.replace("searchr ", "'%");
+        replacedQuery = replacedQuery.replace(" searchl", "%'");
+
         return ResponseEntity.ok(new ResponseWrapper(true, "Products filtered successfully",
-                productService.executeDynamicQuery(formedQuery)));
+                productService.executeDynamicQuery(replacedQuery)));
     }
 
 }

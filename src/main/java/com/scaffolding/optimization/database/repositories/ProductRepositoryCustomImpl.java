@@ -21,6 +21,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @Override
     public List executeDynamicQuery(String queryStr) {
         Query query = entityManager.createQuery(queryStr, Products.class);
-        return query.getResultList();
+
+        var result = query.getResultList();
+
+        return result;
     }
 }
