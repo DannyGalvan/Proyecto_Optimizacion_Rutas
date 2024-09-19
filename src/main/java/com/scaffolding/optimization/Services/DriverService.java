@@ -4,6 +4,7 @@ import com.scaffolding.optimization.api.AutoMapper.DriverMapper;
 import com.scaffolding.optimization.api.Controllers.CrudServiceProcessingController;
 import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
 import com.scaffolding.optimization.database.Entities.models.Drivers;
+import com.scaffolding.optimization.database.dtos.DriversDTO;
 import com.scaffolding.optimization.database.repositories.DriversRepository;
 import org.springframework.stereotype.Service;
 
@@ -72,8 +73,17 @@ public class DriverService extends CrudServiceProcessingController<Drivers> {
         responseWrapper.setMessage("drivers found successfully");
         responseWrapper
                 .setData(driverRepository.findAll()
-                        .stream().map(driverMapper::mapEntityToDto).toList());
+                        .stream().filter(drivers -> !drivers.getUser().getDeleted())
+                        .map(driverMapper::mapEntityToDto).toList());
 
         return responseWrapper;
+    }
+
+    public Drivers findDriverById(Long id) {
+        return driverRepository.findById(id).orElse(null);
+    }
+
+    public Drivers mapToEntityDriver(DriversDTO driverDTO) {
+        return driverMapper.mapDtoToEntity(driverDTO);
     }
 }

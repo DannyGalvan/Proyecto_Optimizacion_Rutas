@@ -43,7 +43,9 @@ public class UserService extends CrudServiceProcessingController<Users> implemen
 
     @Override
     public List<UserResponse> findAll() {
-        return userRepository.findAll().stream().map(userMapper::mapUserToUserResponse).toList();
+        return userRepository.findAll()
+                .stream().filter(user -> !user.getDeleted())
+                .map(userMapper::mapUserToUserResponse).toList();
     }
 
     @Override

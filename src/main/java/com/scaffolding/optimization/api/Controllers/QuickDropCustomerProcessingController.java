@@ -15,15 +15,14 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+
 @RestController
 @RequestMapping("/api/v1/customer")
 public class QuickDropCustomerProcessingController {
-
-
+    
     private final RoleService roleService;
     private final CustomerService customerService;
-    private  ResponseWrapper responseWrapper;
-
 
     public QuickDropCustomerProcessingController(RoleService roleServiceCRUD, CustomerService customerService) {
         this.roleService = roleServiceCRUD;
@@ -32,7 +31,6 @@ public class QuickDropCustomerProcessingController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseWrapper> register(@Valid @RequestBody CustomersDTO customerDTO) {
-       new ResponseWrapper();
         Users userEntity = new Users();
         Roles role = roleService.findByName(QuickDropConstants.QuickDropRoles.CUSTOMER.getRole());
 
@@ -50,8 +48,9 @@ public class QuickDropCustomerProcessingController {
         customerEntity.setUser(userEntity);
 
         customerService.execute(customerEntity, QuickDropConstants.operationTypes.CREATE.getOperationType());
-        responseWrapper.setSuccessful(true);
-        return ResponseEntity.ok(responseWrapper);
+
+        return ResponseEntity.ok(
+                new ResponseWrapper(true,"customer created successfully", Collections.singletonList(null)));
     }
 
     @GetMapping("/all")
@@ -65,4 +64,10 @@ public class QuickDropCustomerProcessingController {
         return ResponseEntity.ok(customerService.execute(customerService.mapToEntityCustomer(customerDTO),
                 QuickDropConstants.operationTypes.UPDATE.getOperationType()));
     }
+
+    @GetMapping("/addresses/{id}")
+    public ResponseEntity<ResponseWrapper> getCustomerByID(@PathVariable Long id){
+        return ResponseEntity.ok(customerService.getAddressesByCustomerId(id));
+    }
 }
+

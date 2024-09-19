@@ -5,7 +5,6 @@ import java.util.List;
 import com.scaffolding.optimization.api.filters.JwtAuthenticationFilter;
 import com.scaffolding.optimization.api.filters.JwtRequestFilter;
 import com.scaffolding.optimization.config.Security.JwtUtil;
-import com.scaffolding.optimization.config.WebConfigCors;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -132,6 +131,9 @@ public class WebSecurityConfig {
         return List.of(
                 new AntPathRequestMatcher("/api/v1/customer/register", "POST"),
                 new AntPathRequestMatcher("/api/v1/customer/all", "GET"),
+                new AntPathRequestMatcher("/api/v1/products/upload", "POST"),
+                new AntPathRequestMatcher("/api/v1/supplier/upload", "POST"),
+                new AntPathRequestMatcher("/api/v1/customer/addresses/**", "GET"),
                 new AntPathRequestMatcher("/api/v1/classification/all", "GET"),
                 new AntPathRequestMatcher("/api/v1/gas-price/all", "POST"),
                 new AntPathRequestMatcher("/doc/**", "GET"),

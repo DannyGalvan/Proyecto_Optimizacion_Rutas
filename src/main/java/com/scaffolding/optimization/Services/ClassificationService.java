@@ -43,6 +43,7 @@ public class ClassificationService extends CrudServiceProcessingController<Class
     public ResponseWrapper executeReadAll() {
         List<ClassificationsDTO> classifications = classificationsRepository.findAll()
                 .stream()
+                .filter(clas -> !clas.getDeleted())
                 .map(classificationMapper::mapEntityToDto)
                 .toList();
         return new ResponseWrapper(true, "Classifications found", classifications);

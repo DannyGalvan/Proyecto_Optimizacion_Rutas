@@ -1,6 +1,7 @@
 package com.scaffolding.optimization.database.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scaffolding.optimization.api.validator.UniqueValue;
 import com.scaffolding.optimization.database.Entities.models.Customers;
 import jakarta.validation.Valid;
@@ -38,6 +39,7 @@ public class CustomersDTO {
 
     @NotNull(message = "User cannot be null")
     @Valid
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UsersDTO user;
 
     @NotNull(message = "Address cannot be null")

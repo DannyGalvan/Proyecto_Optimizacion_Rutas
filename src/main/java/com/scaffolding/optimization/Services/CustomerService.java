@@ -9,6 +9,8 @@ import com.scaffolding.optimization.database.dtos.CustomersDTO;
 import com.scaffolding.optimization.database.repositories.AddressesRepository;
 import com.scaffolding.optimization.database.repositories.CustomersRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -84,10 +86,22 @@ public class CustomerService extends CrudServiceProcessingController<Customers> 
         responseWrapper.setMessage("customers found successfully");
         responseWrapper
                 .setData(customerRepository.findAll()
-                .stream().map(customerMapper::mapEntityToDto).toList());
+                .stream().filter(customers -> !customers.getUser().getDeleted())
+                        .map(customerMapper::mapEntityToDto).toList());
 
         return responseWrapper;
     }
+
+   public ResponseWrapper getAddressesByCustomerId(Long id){
+
+        Customers customer = customerRepository.findById(id).orElse(null);
+        if(customer!=null){
+            CustomersDTO customerFound = customerMapper.mapEntityToDto(customer);
+            return new ResponseWrapper(true,"customer found", Collections.singletonList(customerFound));
+        }
+       return new ResponseWrapper(false,"customer not found", Collections.singletonList("data does not exists"));
+
+   }
 
     public Customers mapToEntityCustomer(CustomersDTO customerDTO) {
         return customerMapper.mapDtoToEntity(customerDTO);

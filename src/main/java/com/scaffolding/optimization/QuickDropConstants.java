@@ -33,8 +33,9 @@ public class QuickDropConstants {
     }
 
     public enum QuickDropRoles {
-        ADMIN("admin"),
-        CUSTOMER("CUSTOMER");
+        ADMIN("ADMIN"),
+        CUSTOMER("CUSTOMER"),
+        DRIVER("DRIVER");
         private String role;
 
         QuickDropRoles(String role) {

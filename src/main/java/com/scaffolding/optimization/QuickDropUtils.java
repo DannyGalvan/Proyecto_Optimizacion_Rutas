@@ -1,6 +1,7 @@
 package com.scaffolding.optimization;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,6 +93,10 @@ public class QuickDropUtils {
         String currentDate = dateFormat.format(new Date());
 
         return "LA10-" + currentDate + "-" + formattedNumber;
+    }
+
+    public static boolean isFileEmpty(MultipartFile file) {
+        return file.isEmpty();
     }
 
 }
