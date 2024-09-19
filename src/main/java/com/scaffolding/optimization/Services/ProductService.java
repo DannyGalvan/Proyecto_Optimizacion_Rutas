@@ -52,7 +52,7 @@ public class ProductService extends CrudServiceProcessingController<Products> {
     }
 
     public boolean existsByNames(String name) {
-        return productsRepository.findByName(name);
+        return productsRepository.findByName(name).isPresent();
     }
 
     public List<Products> executeDynamicQuery(String queryStr) {
