@@ -71,26 +71,12 @@ public class QuickDropProductProcessingController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<ResponseWrapper> filterProducts(@RequestParam(required = false) String query) {
-        String formedQuery = "SELECT p FROM Products p";
-
-        if (query == null) {
-            return ResponseEntity.ok(new ResponseWrapper(true, "Products filtered successfully",
-                    productService.executeDynamicQuery(formedQuery)));
-        }
-
-        if (query.isBlank() || query.isEmpty()) {
-            return ResponseEntity.ok(new ResponseWrapper(true, "Products filtered successfully",
-                    productService.executeDynamicQuery(formedQuery)));
-        }
-
-        formedQuery += " WHERE " + query;
-
-        String replacedQuery = formedQuery.replace("searchr ", "'%");
-        replacedQuery = replacedQuery.replace(" searchl", "%'");
+    public ResponseEntity<ResponseWrapper> filterProducts(@RequestParam(required = false) String search,
+            @RequestParam(required = false) Integer classifyId, @RequestParam(required = false) Integer supplierId) {
+        
 
         return ResponseEntity.ok(new ResponseWrapper(true, "Products filtered successfully",
-                productService.executeDynamicQuery(replacedQuery)));
+                productService.executeDynamicQuery(search, classifyId, supplierId)));
     }
 
 }

@@ -55,7 +55,7 @@ public class ProductService extends CrudServiceProcessingController<Products> {
         return productsRepository.findByName(name).isPresent();
     }
 
-    public List<Products> executeDynamicQuery(String queryStr) {
-        return productsRepository.executeDynamicQuery(queryStr);
+    public List<Products> executeDynamicQuery(String search, Integer classificationId, Integer supplierId) {
+        return productsRepository.executeDynamicQuery(search, classificationId, supplierId);
     }
 }
