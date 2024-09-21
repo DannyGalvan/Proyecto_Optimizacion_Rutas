@@ -3,7 +3,9 @@ package com.scaffolding.optimization.api.Controllers;
 import com.scaffolding.optimization.Services.ProductService;
 import com.scaffolding.optimization.api.converter.DTOParser;
 import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
+import com.scaffolding.optimization.database.Entities.models.Products;
 import com.scaffolding.optimization.database.dtos.ProductsDTO;
+import com.scaffolding.optimization.database.repositories.ClassificationsRepository;
 import com.scaffolding.optimization.database.repositories.SuppliersRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -23,12 +27,14 @@ public class QuickDropProductProcessingController {
     private final DTOParser dtoParser;
     private final ProductService productService;
 
+    private final ClassificationsRepository classificationsRepository;
     private final SuppliersRepository suppliersRepository;
 
-    public QuickDropProductProcessingController(DTOParser dtoParser, ProductService productService,
-            SuppliersRepository suppliersRepository) {
+    public QuickDropProductProcessingController(DTOParser dtoParser, ProductService productService, ClassificationsRepository classificationsRepository,
+                                                SuppliersRepository suppliersRepository) {
         this.dtoParser = dtoParser;
         this.productService = productService;
+        this.classificationsRepository = classificationsRepository;
         this.suppliersRepository = suppliersRepository;
     }
 
@@ -47,8 +53,10 @@ public class QuickDropProductProcessingController {
             List<ProductsDTO> products = dtoParser.parse(ProductsDTO.class, inputFile);
             Files.delete(tempFile);
 
+
             List<ProductsDTO> validProducts = products.stream()
-                    .filter(product -> suppliersRepository.findById(product.getSupplierId()).isPresent())
+                    .filter(product -> suppliersRepository.existsById(product.getSupplierId()))
+                    .filter(product -> classificationsRepository.existsById(product.getClassificationId()))
                     .filter(product -> !productService.existsByNames(product.getName()))
                     .toList();
 
@@ -57,9 +65,25 @@ public class QuickDropProductProcessingController {
                         new ResponseWrapper(false, "the products already exist or the supplier does not exist", null));
             }
 
-            validProducts.stream()
+            Map<Long, ProductsDTO> dtoMap = validProducts.stream()
+                    .collect(Collectors.toMap(ProductsDTO::getId, dto -> dto));
+
+            List<Products> productsEntities = validProducts.stream()
                     .map(productService::mapDtoToEntity)
-                    .forEach(productService::executeCreation);
+                    .peek(product -> {
+                        ProductsDTO dto = dtoMap.get(product.getId());
+                        if (dto == null) {
+                            throw new RuntimeException("Product DTO not found");
+                        }
+                        product.setDeleted(false);
+                        product.setSupplier(suppliersRepository.findById(dto.getSupplierId())
+                                .orElseThrow(() -> new RuntimeException("Supplier not found")));
+                        product.setClassification(classificationsRepository.findById(dto.getClassificationId())
+                                .orElseThrow(() -> new RuntimeException("Classification not found")));
+                    })
+                    .toList();
+
+            productsEntities.forEach(productService::executeCreation);
 
             return ResponseEntity.ok(new ResponseWrapper(true, "Products uploaded successfully",
                     Collections.singletonList("Numbers of products uploaded: " + validProducts.size())));
