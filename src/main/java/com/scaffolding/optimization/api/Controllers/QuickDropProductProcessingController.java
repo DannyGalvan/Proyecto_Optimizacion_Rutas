@@ -17,8 +17,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -65,16 +63,14 @@ public class QuickDropProductProcessingController {
                         new ResponseWrapper(false, "the products already exist or the supplier does not exist", null));
             }
 
-            Map<Long, ProductsDTO> dtoMap = validProducts.stream()
-                    .collect(Collectors.toMap(ProductsDTO::getId, dto -> dto));
-
             List<Products> productsEntities = validProducts.stream()
                     .map(productService::mapDtoToEntity)
                     .peek(product -> {
-                        ProductsDTO dto = dtoMap.get(product.getId());
-                        if (dto == null) {
-                            throw new RuntimeException("Product DTO not found");
-                        }
+                        ProductsDTO dto = validProducts.stream()
+                                .filter(p -> p.getName().equals(product.getName()))
+                                .findFirst()
+                                .orElseThrow(() -> new RuntimeException("Product not found"));
+
                         product.setDeleted(false);
                         product.setSupplier(suppliersRepository.findById(dto.getSupplierId())
                                 .orElseThrow(() -> new RuntimeException("Supplier not found")));
