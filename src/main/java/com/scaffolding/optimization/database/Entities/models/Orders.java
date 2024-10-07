@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -17,16 +18,16 @@ public class Orders {
     private Long id;
 
     @Column(name = "order_date", nullable = false)
-    private Date orderDate;
+    private Timestamp orderDate;
 
     @Column(name = "delivery_date")
-    private Date deliveryDate;
+    private Timestamp deliveryDate;
 
     @Column(name = "total", nullable = false)
     private BigDecimal total;
 
     @Column(name = "is_deleted")
-    private Boolean deleted;
+    private Boolean deleted = false;
 
     @ManyToOne
     @JoinColumn(name = "assignment_id", referencedColumnName = "id")

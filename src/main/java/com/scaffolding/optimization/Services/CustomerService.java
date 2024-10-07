@@ -103,6 +103,10 @@ public class CustomerService extends CrudServiceProcessingController<Customers> 
 
    }
 
+    public Customers getCustomerById(Long id){
+        return customerRepository.findById(id).orElse(null);
+    }
+
     public Customers mapToEntityCustomer(CustomersDTO customerDTO) {
         return customerMapper.mapDtoToEntity(customerDTO);
     }

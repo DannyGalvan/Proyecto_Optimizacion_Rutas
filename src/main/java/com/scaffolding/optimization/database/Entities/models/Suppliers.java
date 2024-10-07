@@ -31,7 +31,4 @@ public class Suppliers extends BaseEntity {
     @Column(name = "nit")
     private String nit;
 
-    @Column(name = "cui")
-    private String cui;
-
 }

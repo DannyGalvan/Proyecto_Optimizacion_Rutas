@@ -48,6 +48,29 @@ public class QuickDropConstants {
 
     }
 
+    public enum QuickDropStatus{
+        CREATED("CREADO"),
+        DELIVERED("ENTREGADO"),
+
+        IN_TRANSIT("EN_TRANSITO"),
+
+        CANCELLED("CANCELADO"),
+
+        COLLECTED("EN_BODEGA");
+
+        private String status;
+
+        QuickDropStatus(String status) {
+            this.status = status;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+
+    }
+
     public enum QuickDropUserTypes {
         CUSTOMER("externo"),
         EMPLOYEE("interno");

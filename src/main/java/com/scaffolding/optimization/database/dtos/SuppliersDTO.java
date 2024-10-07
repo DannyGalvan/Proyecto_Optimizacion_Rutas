@@ -30,6 +30,9 @@ public class SuppliersDTO {
     private String email;
 
     @CsvBindByName
+    private String nit;
+
+    @CsvBindByName
     private Boolean deleted;
 
 }

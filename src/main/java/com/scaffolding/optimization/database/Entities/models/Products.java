@@ -21,6 +21,12 @@ public class Products {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @Column(name = "icon")
+    private String icon;
+
+    @Column(name = "weight")
+    private BigDecimal weight;
+
     @Column(name = "is_deleted")
     private Boolean deleted;
 

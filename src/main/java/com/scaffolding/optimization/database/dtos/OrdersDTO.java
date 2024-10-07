@@ -7,26 +7,30 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class OrdersDTO {
     private Long id;
 
-    @Min(value = 1, message = "Assignment ID is required")
+
     private Long assignmentId;
 
     @Min(value = 1, message = "Customer ID is required")
     private Long customerId;
 
-    private Date orderDate = new Date(System.currentTimeMillis());
+    private Timestamp orderDate = new Timestamp(System.currentTimeMillis());
 
     private Date deliveryDate;
 
-    @Min(value = 1, message = "Status ID is required")
     private Long statusId;
 
-    @DecimalMin(value = "0.0", inclusive = false, message = "Total must be greater than 0")
     private BigDecimal total;
+
+    private AddressesDTO address;
+
+    private List<OrderDetailDTO> orderDetails;
 
     private Boolean deleted;
 
