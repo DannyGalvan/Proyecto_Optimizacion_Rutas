@@ -1,5 +1,7 @@
 package com.scaffolding.optimization.database.Entities.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,6 +29,6 @@ public class OrderDetail {
     private BigDecimal lineTotal;
 
     @Column(name = "quantity", nullable = false)
-    private Long quantity;
+    private int quantity;
 
 }

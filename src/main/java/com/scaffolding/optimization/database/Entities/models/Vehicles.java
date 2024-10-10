@@ -27,6 +27,9 @@ public class Vehicles extends BaseEntity {
     @Column(name = "min_weight", nullable = false)
     private BigDecimal minWeight;
 
+    @Transient
+    private BigDecimal currentWeight = BigDecimal.ZERO;
+
     @Column(name = "description")
     private String description;
 

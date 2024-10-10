@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,13 +26,16 @@ public class Warehouses extends BaseEntity {
     private String address;
 
     @Column(name = "longitude")
-    private BigDecimal longitude;
+    private String longitude;
 
     @Column(name = "latitude")
-    private BigDecimal latitude;
+    private String latitude;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private Suppliers supplier;
+
+    @OneToMany(mappedBy = "warehouse", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<WarehouseProduct> warehouseProducts;
 
 }

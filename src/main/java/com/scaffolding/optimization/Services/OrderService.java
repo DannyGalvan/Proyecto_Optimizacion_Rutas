@@ -1,13 +1,10 @@
 package com.scaffolding.optimization.Services;
 
 
-import com.scaffolding.optimization.api.Controllers.CrudServiceProcessingController;
-import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
+
 import com.scaffolding.optimization.database.Entities.models.Orders;
 import com.scaffolding.optimization.database.repositories.OrdersRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 public class OrderService {
@@ -21,6 +18,13 @@ public class OrderService {
 
     public Orders executeCreation(Orders entity) {
         return orderRepository.save(entity);
+    }
+    public Orders executeUpdate(Orders entity) {
+        return orderRepository.save(entity);
+    }
+
+    public Orders findById(Long id) {
+        return orderRepository.findById(id).orElse(null);
     }
 
 

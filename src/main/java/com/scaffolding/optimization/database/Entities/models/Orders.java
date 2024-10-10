@@ -1,11 +1,13 @@
 package com.scaffolding.optimization.database.Entities.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
@@ -44,5 +46,11 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
+
+    @Override
+    public String toString() {
+        return "Order ID: " + this.id + ", Order Date: " + this.orderDate + ", Total: " + this.total;
+    }
+
 
 }

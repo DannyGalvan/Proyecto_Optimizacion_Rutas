@@ -1,7 +1,6 @@
 package com.scaffolding.optimization.database.Entities.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
@@ -26,10 +25,10 @@ public class Addresses extends BaseEntity {
     private String name;
 
     @Column(name = "longitude")
-    private BigDecimal longitude;
+    private String longitude;
 
     @Column(name = "latitude")
-    private BigDecimal latitude;
+    private String latitude;
 
     @ManyToOne
     @JoinColumn(name = "id_customer", referencedColumnName = "id")

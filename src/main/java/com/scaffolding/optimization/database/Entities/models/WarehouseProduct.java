@@ -22,6 +22,6 @@ public class WarehouseProduct {
     private Products product;
 
     @Column(name = "partial_stock", nullable = false)
-    private Long partialStock;
+    private int partialStock;
 
 }

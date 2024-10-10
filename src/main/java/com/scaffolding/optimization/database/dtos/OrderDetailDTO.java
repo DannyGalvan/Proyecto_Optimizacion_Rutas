@@ -20,6 +20,6 @@ public class OrderDetailDTO {
     private BigDecimal lineTotal;
 
     @Min(value = 1, message = "Quantity is required")
-    private Long quantity;
+    private int quantity;
 
 }

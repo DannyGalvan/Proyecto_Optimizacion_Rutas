@@ -17,10 +17,10 @@ public class AddressesDTO {
     private String name;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "latitude must be greater than 0")
-    private BigDecimal longitude;
+    private String longitude;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "latitude must be greater than 0")
-    private BigDecimal latitude;
+    private String latitude;
 
     private Boolean deleted;
 

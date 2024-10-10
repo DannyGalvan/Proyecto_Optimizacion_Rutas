@@ -99,4 +99,9 @@ public class QuickDropUtils {
         return file.isEmpty();
     }
 
+    public static boolean isFivePM(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+        return sdf.format(date).equals("17");
+    }
+
 }

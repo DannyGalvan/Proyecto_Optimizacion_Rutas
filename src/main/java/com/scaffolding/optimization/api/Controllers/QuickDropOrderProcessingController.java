@@ -30,7 +30,6 @@ public class QuickDropOrderProcessingController {
     private final ProductsRepository productsRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final StatusRepository statusRepository;
-
     private final CustomerService customerService;
 
     public QuickDropOrderProcessingController(OrderService orderService, AddressesRepository addressesRepository, ProductsRepository productsRepository, OrderDetailRepository orderDetailRepository, StatusRepository statusRepository, CustomerService customerService) {
@@ -62,6 +61,15 @@ public class QuickDropOrderProcessingController {
         saveOrderDetails(order, savedOrder, orderDetails);
 
         return ResponseEntity.ok(new ResponseWrapper(true, "Order created successfully", Collections.singletonList("CREATED")));
+    }
+
+    @PutMapping("/{id}/{status}")
+    public ResponseEntity<ResponseWrapper> getOrderById(@PathVariable Long id, @PathVariable String status) {
+        Orders order = orderService.findById(id);
+        Status newStatus = statusRepository.findByName(status);
+        order.setStatus(newStatus);
+        orderService.executeUpdate(order);
+        return ResponseEntity.ok(new ResponseWrapper(true, "Order updated successfully", Collections.singletonList("UPDATED")));
     }
 
     private Addresses createNewAddress(OrdersDTO order, Customers customer) {
