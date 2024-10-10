@@ -1,16 +1,22 @@
 package com.scaffolding.optimization.Services;
 
 
+import com.scaffolding.optimization.api.AutoMapper.AddressMapper;
 import com.scaffolding.optimization.api.AutoMapper.CustomerMapper;
 import com.scaffolding.optimization.api.Controllers.CrudServiceProcessingController;
 import com.scaffolding.optimization.database.Entities.Response.ResponseWrapper;
+import com.scaffolding.optimization.database.Entities.models.Addresses;
 import com.scaffolding.optimization.database.Entities.models.Customers;
+import com.scaffolding.optimization.database.dtos.AddressesDTO;
 import com.scaffolding.optimization.database.dtos.CustomersDTO;
 import com.scaffolding.optimization.database.repositories.AddressesRepository;
 import com.scaffolding.optimization.database.repositories.CustomersRepository;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.stylesheets.LinkStyle;
 
+import java.sql.ClientInfoStatus;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,14 +25,16 @@ public class CustomerService extends CrudServiceProcessingController<Customers> 
     private final CustomersRepository customerRepository;
 
     private final CustomerMapper customerMapper;
+    private final AddressMapper addressMapper;
     private final UserService userService;
 
     private final AddressesRepository addressesRepository;
     private ResponseWrapper responseWrapper;
 
-    public CustomerService(CustomersRepository customerRepository, CustomerMapper customerMapper, UserService userService, AddressesRepository addressesRepository) {
+    public CustomerService(CustomersRepository customerRepository, CustomerMapper customerMapper, AddressMapper addressMapper, UserService userService, AddressesRepository addressesRepository) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
+        this.addressMapper = addressMapper;
         this.userService = userService;
         this.addressesRepository = addressesRepository;
     }
@@ -36,8 +44,6 @@ public class CustomerService extends CrudServiceProcessingController<Customers> 
         responseWrapper = new ResponseWrapper();
         userService.executeCreation(entity.getUser());
         Customers customerCreated = customerRepository.save(entity);
-        entity.getAddresses().forEach(address -> address.setCustomer(customerCreated));
-        addressesRepository.saveAll(entity.getAddresses());
         responseWrapper.setSuccessful(true);
         responseWrapper.setMessage("cliente creado exitosamente");
         return responseWrapper;
@@ -96,8 +102,9 @@ public class CustomerService extends CrudServiceProcessingController<Customers> 
 
         Customers customer = customerRepository.findById(id).orElse(null);
         if(customer!=null){
-            CustomersDTO customerFound = customerMapper.mapEntityToDto(customer);
-            return new ResponseWrapper(true,"customer found", Collections.singletonList(customerFound));
+            List<Addresses> addresses = addressesRepository.findByCustomer(customer);
+            List<AddressesDTO> addressesDTO = addresses.stream().map(addressMapper::mapEntityToDto).toList();
+            return new ResponseWrapper(true,"Direcciones", addressesDTO);
         }
        return new ResponseWrapper(false,"customer not found", Collections.singletonList("data does not exists"));
 

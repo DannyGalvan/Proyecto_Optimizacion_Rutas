@@ -42,7 +42,4 @@ public class Customers {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Users user;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Addresses> addresses;
-
 }
