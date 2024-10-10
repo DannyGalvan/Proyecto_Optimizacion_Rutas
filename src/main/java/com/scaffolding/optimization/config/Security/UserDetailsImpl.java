@@ -73,10 +73,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public List<Modules> getModules() {
-        return userEntity.getRole().getRolesModules()
-                .stream()
-                .map(RolesModules::getModule)
-                .collect(Collectors.toList());
+        return new ArrayList<>();
     }
 
 }

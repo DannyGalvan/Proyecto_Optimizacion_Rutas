@@ -29,8 +29,4 @@ public class Roles extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "role")
-    private List<RolesModules> rolesModules = new ArrayList<>();
-
 }

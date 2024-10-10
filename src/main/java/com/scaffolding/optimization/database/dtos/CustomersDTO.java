@@ -28,22 +28,19 @@ public class CustomersDTO {
     private String phone;
 
     @NotEmpty(message = "NIT cannot be empty")
-    @Pattern(regexp = "^[0-9]{9}$", message = "NIT must be 14 digits")
+    @Pattern(regexp = "^[0-9]{9}$", message = "NIT must be 9 digits")
     @UniqueValue(fieldName = "nit", entityClass = Customers.class, message = "NIT already in use")
     private String nit;
 
     @NotEmpty(message = "CUI cannot be empty")
-    @Pattern(regexp = "^[0-9]{13}$", message = "CUI must be 14 digits")
+    @Pattern(regexp = "^[0-9]{13}$", message = "CUI must be 13 digits")
     @UniqueValue(fieldName = "cui", entityClass = Customers.class, message = "CUI already in use")
     private String cui;
 
     @NotNull(message = "User cannot be null")
-    @Valid
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UsersDTO user;
 
-    @NotNull(message = "Address cannot be null")
-    @Valid
     private List<AddressesDTO> addresses;
 
 }

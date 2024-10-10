@@ -30,7 +30,7 @@ public class QuickDropCustomerProcessingController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseWrapper> register(@Valid @RequestBody CustomersDTO customerDTO) {
+    public ResponseEntity<ResponseWrapper> register(@RequestBody CustomersDTO customerDTO) {
         Users userEntity = new Users();
         Roles role = roleService.findByName(QuickDropConstants.QuickDropRoles.CUSTOMER.getRole());
 
