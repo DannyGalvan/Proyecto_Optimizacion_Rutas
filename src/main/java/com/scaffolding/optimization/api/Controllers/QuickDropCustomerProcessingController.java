@@ -67,7 +67,8 @@ public class QuickDropCustomerProcessingController {
 
     @GetMapping("/addresses/{id}")
     public ResponseEntity<ResponseWrapper> getCustomerByID(@PathVariable Long id){
-        return ResponseEntity.ok(customerService.getAddressesByCustomerId(id));
+        Customers customer = customerService.findByUserID(id);
+        return ResponseEntity.ok(customerService.getAddressesByCustomerId(customer.getId()));
     }
 }
 

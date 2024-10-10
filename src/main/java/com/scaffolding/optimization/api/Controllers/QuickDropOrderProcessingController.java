@@ -45,7 +45,7 @@ public class QuickDropOrderProcessingController {
     public ResponseEntity<ResponseWrapper> createOrder(@RequestBody OrdersDTO order) {
         Orders newOrder = new Orders();
         List<OrderDetail> orderDetails = new ArrayList<>();
-        Customers customer = customerService.getCustomerById(order.getCustomerId());
+        Customers customer = customerService.findByUserID(order.getCustomerId());
         Optional<Addresses> customerAddress = Optional.ofNullable(addressesRepository.findByName(order.getAddress().getName()));
         Status status = statusRepository.findByName(QuickDropConstants.QuickDropStatus.CREATED.getStatus());
 

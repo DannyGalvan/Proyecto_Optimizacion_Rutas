@@ -8,5 +8,6 @@ public interface CustomersRepository extends JpaRepository<Customers, Long>, Jpa
     Customers findByNit(String nit);
     Customers findByPhone(String phone);
     Customers findByCui(String cui);
+    Customers findByUserId(Long userId);
 
 }
