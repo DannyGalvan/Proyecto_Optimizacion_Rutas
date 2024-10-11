@@ -5,10 +5,7 @@ import com.scaffolding.optimization.QuickDropUtils;
 import com.scaffolding.optimization.Services.solver.ShipmentService;
 import com.scaffolding.optimization.database.Entities.Response.shipment.ShipmentResponseWrapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
 import java.util.Collections;
@@ -29,7 +26,7 @@ public class QuickDropShipmentProcessingController {
         if (LocalTime.now().isAfter(QuickDropUtils.closeTime)) {
             return ResponseEntity.ok(shipmentService.executeShipmentProcessing());
         }
-        return ResponseEntity.ok("Las asignaciones solo pueden realizarse después de las 5:00 PM");
+        return ResponseEntity.ok("Las asignaciones solo pueden realizarse después de las " + QuickDropUtils.closeTime);
     }
 
     @GetMapping("/getShipments")
@@ -40,5 +37,11 @@ public class QuickDropShipmentProcessingController {
             return ResponseEntity.badRequest().body(Collections.singletonList(new ShipmentResponseWrapper("No hay asignaciones disponibles")));
         }
         return ResponseEntity.ok(shipments);
+    }
+
+    @PutMapping("/changeCloseTime")
+    public ResponseEntity<String> changeCloseTime(@RequestParam("time") String time) {
+        QuickDropUtils.closeTime = LocalTime.parse(time);
+        return ResponseEntity.ok("El tiempo de cierre ha sido cambiado a las " + time);
     }
 }
