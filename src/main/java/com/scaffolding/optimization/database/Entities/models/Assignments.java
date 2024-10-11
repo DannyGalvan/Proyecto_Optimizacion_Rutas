@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigDecimal;
+
 
 @Getter
 @Setter
@@ -28,5 +30,12 @@ public class Assignments extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
+
+    @Column(name = "total_warehouse_pickup_cost", nullable = false)
+    private BigDecimal totalWarehousePickupCost;
+
+    @Column(name = "delivery_transportation_cost", nullable = false)
+    private BigDecimal deliveryTransportationCost;
+
 
 }

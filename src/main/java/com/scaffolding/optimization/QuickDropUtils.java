@@ -3,7 +3,9 @@ package com.scaffolding.optimization;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Random;
 
@@ -103,5 +105,13 @@ public class QuickDropUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("HH");
         return sdf.format(date).equals("17");
     }
+
+    public static Timestamp getNextDay() {
+        Date date = new Date();
+        long time = date.getTime();
+        return new Timestamp(time + 24 * 60 * 60 * 1000);
+    }
+
+    public static final LocalTime closeTime = LocalTime.parse("17:00:00");
 
 }

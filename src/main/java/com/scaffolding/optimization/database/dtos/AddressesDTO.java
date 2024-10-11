@@ -22,6 +22,7 @@ public class AddressesDTO {
     @DecimalMin(value = "0.0", inclusive = false, message = "latitude must be greater than 0")
     private String latitude;
 
+    @JsonIgnore
     private Boolean deleted;
 
     @JsonIgnore

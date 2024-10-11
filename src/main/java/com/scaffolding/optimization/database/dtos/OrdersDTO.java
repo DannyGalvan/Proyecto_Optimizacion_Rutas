@@ -1,7 +1,7 @@
 package com.scaffolding.optimization.database.dtos;
 
 
-import jakarta.validation.constraints.DecimalMin;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 
@@ -12,18 +12,22 @@ import java.util.List;
 
 @Data
 public class OrdersDTO {
-    private Long id;
 
+    private Long id;
 
     private Long assignmentId;
 
+    @JsonIgnore
     @Min(value = 1, message = "Customer ID is required")
     private Long customerId;
 
+    @JsonIgnore
     private Timestamp orderDate = new Timestamp(System.currentTimeMillis());
 
-    private Date deliveryDate;
+    @JsonIgnore
+    private Timestamp deliveryDate;
 
+    @JsonIgnore
     private Long statusId;
 
     private BigDecimal total;
@@ -32,6 +36,7 @@ public class OrdersDTO {
 
     private List<OrderDetailDTO> orderDetails;
 
+    @JsonIgnore
     private Boolean deleted;
 
 }
