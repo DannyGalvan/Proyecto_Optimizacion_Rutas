@@ -17,17 +17,12 @@ public class OrdersDTO {
 
     private Long assignmentId;
 
-    @JsonIgnore
     @Min(value = 1, message = "Customer ID is required")
     private Long customerId;
 
-    @JsonIgnore
     private Timestamp orderDate = new Timestamp(System.currentTimeMillis());
 
-    @JsonIgnore
     private Timestamp deliveryDate;
-
-    @JsonIgnore
     private Long statusId;
 
     private BigDecimal total;
