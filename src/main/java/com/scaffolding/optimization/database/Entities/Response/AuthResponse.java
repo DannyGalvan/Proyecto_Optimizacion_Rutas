@@ -21,5 +21,6 @@ public class AuthResponse {
     private String email;
     private Collection<? extends GrantedAuthority> authorities;
     private String type = "Bearer";
+    private Long role;
     private String expirationDate;
 }

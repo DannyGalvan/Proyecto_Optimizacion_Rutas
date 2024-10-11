@@ -3,12 +3,10 @@ package com.scaffolding.optimization.config.Security;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.scaffolding.optimization.config.RoleConfig;
 import com.scaffolding.optimization.database.Entities.models.Modules;
 import com.scaffolding.optimization.database.Entities.models.Roles;
-import com.scaffolding.optimization.database.Entities.models.RolesModules;
 import com.scaffolding.optimization.database.Entities.models.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -70,6 +68,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getAlias() {
         return userEntity.getAlias();
+    }
+
+    public Long getRole() {
+        return userEntity.getRole().getId();
     }
 
     public List<Modules> getModules() {

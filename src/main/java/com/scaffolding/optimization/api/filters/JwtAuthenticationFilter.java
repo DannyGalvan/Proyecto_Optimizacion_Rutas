@@ -60,6 +60,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             claims.put("authorities", userDetails.getAuthorities());
             claims.put("email", userDetails.getEmail());
             claims.put("modules", userDetails.getModules());
+            claims.put("role", userDetails.getRole());
 
             String token = jwtUtil.createToken(claims, userDetails.getUsername());
 
@@ -71,6 +72,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             authResponse.setAlias(userDetails.getAlias());
             authResponse.setEmail(userDetails.getEmail());
             authResponse.setAuthorities(userDetails.getAuthorities());
+            authResponse.setRole(userDetails.getRole());
             authResponse.setExpirationDate(dateExpiredFormated);
 
             response.getWriter()
