@@ -3,11 +3,10 @@ package com.scaffolding.optimization.api.Controllers;
 
 import com.scaffolding.optimization.QuickDropUtils;
 import com.scaffolding.optimization.Services.solver.ShipmentService;
-import com.scaffolding.optimization.Services.solver.SimplexOptimizationService;
-import com.scaffolding.optimization.database.Entities.Response.AssigmentResponseWrapper;
 import com.scaffolding.optimization.database.Entities.Response.shipment.ShipmentResponseWrapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +24,7 @@ public class QuickDropShipmentProcessingController {
         this.shipmentService = shipmentService;
     }
 
-    @GetMapping("/createShipments")
+    @PostMapping("/createShipments")
     public ResponseEntity<String> shipments() {
         if (LocalTime.now().isAfter(QuickDropUtils.closeTime)) {
             return ResponseEntity.ok(shipmentService.executeShipmentProcessing());

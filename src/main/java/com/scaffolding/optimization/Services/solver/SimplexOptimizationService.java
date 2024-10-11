@@ -27,24 +27,17 @@ public class SimplexOptimizationService {
     private static final String longitude = "-90.643291";
     private final String API_KEY = "AIzaSyDXpDUEBYsQPagnH8poxVZdmswBGkMzL08";
     private GeoApiContext geoApiContext;
-
-    private final WarehousesRepository warehousesRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final VehiclesRepository vehiclesRepository;
-    private final DriversRepository driversRepository;
-    private final AssignmentsRepository assignmentsRepository;
     private final OrdersRepository ordersRepository;
     private final WarehouseProductRepository warehouseProductRepository;
 
-    public SimplexOptimizationService(WarehousesRepository warehousesRepository, OrderDetailRepository orderDetailRepository,
-                                      VehiclesRepository vehiclesRepository, DriversRepository driversRepository,
-                                      AssignmentsRepository assignmentsRepository, OrdersRepository ordersRepository,
+    public SimplexOptimizationService(OrderDetailRepository orderDetailRepository,
+                                      VehiclesRepository vehiclesRepository,
+                                      OrdersRepository ordersRepository,
                                       WarehouseProductRepository warehouseProductRepository) {
-        this.warehousesRepository = warehousesRepository;
         this.orderDetailRepository = orderDetailRepository;
         this.vehiclesRepository = vehiclesRepository;
-        this.driversRepository = driversRepository;
-        this.assignmentsRepository = assignmentsRepository;
         this.ordersRepository = ordersRepository;
         this.warehouseProductRepository = warehouseProductRepository;
         this.geoApiContext = new GeoApiContext.Builder().apiKey(API_KEY).build();

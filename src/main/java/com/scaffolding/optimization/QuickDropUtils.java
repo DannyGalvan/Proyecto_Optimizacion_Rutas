@@ -112,6 +112,6 @@ public class QuickDropUtils {
         return new Timestamp(time + 24 * 60 * 60 * 1000);
     }
 
-    public static final LocalTime closeTime = LocalTime.parse("17:00:00");
+    public static final LocalTime closeTime = LocalTime.parse("11:00:00");
 
 }

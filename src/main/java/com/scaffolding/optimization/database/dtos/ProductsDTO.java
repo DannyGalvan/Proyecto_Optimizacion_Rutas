@@ -21,6 +21,8 @@ public class ProductsDTO {
     @CsvBindByName
     private BigDecimal price;
 
+    private String icon;
+
     @CsvBindByName
     private Boolean deleted;
 

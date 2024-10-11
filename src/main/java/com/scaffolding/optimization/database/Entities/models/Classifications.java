@@ -31,7 +31,7 @@ public class Classifications extends BaseEntity {
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "classification")
+    @OneToMany(mappedBy = "classification", fetch = FetchType.EAGER)
     private List<Products> products;
 
 }

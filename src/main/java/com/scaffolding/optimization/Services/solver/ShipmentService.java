@@ -210,21 +210,35 @@ public class ShipmentService {
         return totalCost;
     }
 
-    private BigDecimal calculateDeliveryCost(List<WarehousesDTO> warehouses, AddressesDTO address, VehiclesDTO vehicle) {
-        Vehicles vehicleFound = vehiclesRepository.findById(vehicle.getId()).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
-        WarehousesDTO lastWarehouse = warehouses.get(warehouses.size() - 1); // Última bodega
-
-        String warehouseLat = lastWarehouse.getLatitude().toString();
-        String warehouseLon = lastWarehouse.getLongitude().toString();
-
-        String addressLat = address.getLatitude().toString();
-        String addressLon = address.getLongitude().toString();
+    private double calculateDistance(WarehousesDTO warehouse, AddressesDTO address) {
+        String warehouseLat = warehouse.getLatitude();
+        String warehouseLon = warehouse.getLongitude();
+        String addressLat = address.getLatitude();
+        String addressLon = address.getLongitude();
 
         String[] origins = {warehouseLat + "," + warehouseLon};
         String[] destinations = {addressLat + "," + addressLon};
 
-        double distanceKm = simplexOptimizationService.getDistanceBetweenLocations(origins, destinations);
+        return simplexOptimizationService.getDistanceBetweenLocations(origins, destinations);
+    }
 
+    private BigDecimal calculateDeliveryCost(List<WarehousesDTO> warehouses, AddressesDTO address, VehiclesDTO vehicle) {
+        Vehicles vehicleFound = vehiclesRepository.findById(vehicle.getId()).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+
+        // Calculate distances between each warehouse and the client's address
+        List<WarehouseDistance> warehouseDistances = new ArrayList<>();
+        for (WarehousesDTO warehouse : warehouses) {
+            double distanceKm = calculateDistance(warehouse, address);
+            warehouseDistances.add(new WarehouseDistance(warehouse, distanceKm));
+        }
+
+        // Sort warehouses by distance in ascending order
+        warehouseDistances.sort(Comparator.comparingDouble(WarehouseDistance::getDistance));
+
+        // Get the warehouse with the smallest distance
+        WarehousesDTO closestWarehouse = warehouseDistances.get(0).getWarehouse();
+
+        double distanceKm = calculateDistance(closestWarehouse, address);
         double costPerKm = calculateVehicleCostPerKm(vehicleFound);
 
         return BigDecimal.valueOf(distanceKm * costPerKm);
@@ -248,5 +262,23 @@ public class ShipmentService {
         double activationCost = vehicle.getActivationCost().doubleValue();
         double fuelPrice = vehicle.getGasType().getPrice().doubleValue();
         return activationCost * fuelPrice;
+    }
+
+    private static class WarehouseDistance {
+        private final WarehousesDTO warehouse;
+        private final double distance;
+
+        public WarehouseDistance(WarehousesDTO warehouse, double distance) {
+            this.warehouse = warehouse;
+            this.distance = distance;
+        }
+
+        public WarehousesDTO getWarehouse() {
+            return warehouse;
+        }
+
+        public double getDistance() {
+            return distance;
+        }
     }
 }
