@@ -42,6 +42,6 @@ public class QuickDropShipmentProcessingController {
     @PutMapping("/changeCloseTime")
     public ResponseEntity<String> changeCloseTime(@RequestParam("time") String time) {
         QuickDropUtils.closeTime = LocalTime.parse(time);
-        return ResponseEntity.ok("El tiempo de cierre ha sido cambiado a las " + time);
+        return ResponseEntity.ok("El tiempo de cierre ha sido cambiado a las " + QuickDropUtils.closeTime );
     }
 }

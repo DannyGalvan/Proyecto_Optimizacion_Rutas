@@ -148,7 +148,8 @@ public class WebSecurityConfig {
             new AntPathRequestMatcher("/api/v1/products/filter/**", "GET"),
             new AntPathRequestMatcher("/api/v1/orders/**", "POST"),
             new AntPathRequestMatcher("/api/v1/shipments/**", "GET"),
-            new AntPathRequestMatcher("/api/v1/shipments/**", "POST"));
+            new AntPathRequestMatcher("/api/v1/shipments/**", "POST"),
+            new AntPathRequestMatcher("/api/v1/shipments/**", "PUT"));
             
     }
 }
