@@ -50,7 +50,7 @@ public class QuickDropOrderProcessingController {
         if (!checkStock(order.getOrderDetails())) {
             return ResponseEntity.badRequest().body(new ResponseWrapper(false, "Stock insuficiente para uno o más productos", Collections.singletonList("INSUFFICIENT_STOCK")));        }
 
-        if (LocalTime.now().isAfter(QuickDropUtils.closeTime)) {
+        if (LocalTime.now().isAfter(QuickDropUtils.closedOrderTime)) {
             order.setOrderDate(QuickDropUtils.getNextDay());
         }
 
@@ -85,6 +85,12 @@ public class QuickDropOrderProcessingController {
         order.setStatus(newStatus);
         orderService.executeUpdate(order);
         return ResponseEntity.ok(new ResponseWrapper(true, "Order updated successfully", Collections.singletonList("UPDATED")));
+    }
+
+    @PutMapping("/changeClosedOrderTime")
+    public ResponseEntity<String> changeClosedOrderTime(@RequestParam("time") String time) {
+        QuickDropUtils.closedOrderTime = LocalTime.parse(time);
+        return ResponseEntity.ok("El tiempo de cierre de la orden ha sido cambiado a las " + QuickDropUtils.closedOrderTime);
     }
 
     private Addresses createNewAddress(OrdersDTO order, Customers customer) {

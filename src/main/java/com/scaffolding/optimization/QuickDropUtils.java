@@ -113,5 +113,6 @@ public class QuickDropUtils {
     }
 
     public static LocalTime closeTime = LocalTime.parse("17:00:00");
+    public static LocalTime closedOrderTime = LocalTime.parse("17:00:00");
 
 }
