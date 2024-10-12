@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -140,7 +141,7 @@ public class SimplexOptimizationService {
 
     @Transactional(readOnly = true)
     public List<Orders> getOrdersForToday() {
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(ZoneId.of("America/Guatemala"));
         return ordersRepository.findAll().stream()
                 .filter(order -> order.getOrderDate().toLocalDateTime().toLocalDate().equals(today)
                         && order.getAssignment() == null)

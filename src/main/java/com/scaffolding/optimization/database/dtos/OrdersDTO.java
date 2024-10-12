@@ -8,6 +8,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Data
@@ -20,8 +22,9 @@ public class OrdersDTO {
     @Min(value = 1, message = "Customer ID is required")
     private Long customerId;
 
-    private Timestamp orderDate = new Timestamp(System.currentTimeMillis());
-
+    private Timestamp orderDate = Timestamp.valueOf(
+            LocalDateTime.now(ZoneId.of("America/Guatemala"))
+    );
     private Timestamp deliveryDate;
     private Long statusId;
 
