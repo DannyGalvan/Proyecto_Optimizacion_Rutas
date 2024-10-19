@@ -1,6 +1,7 @@
 package com.scaffolding.optimization.Services.solver;
 
 
+import com.scaffolding.optimization.QuickDropUtils;
 import com.scaffolding.optimization.database.Entities.Response.AssigmentResponseWrapper;
 import com.scaffolding.optimization.database.Entities.Response.shipment.*;
 import com.scaffolding.optimization.database.Entities.models.*;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -44,8 +46,17 @@ public class ShipmentService {
     public List<ShipmentResponseWrapper> getShipments() {
 
         List<ShipmentResponseWrapper> shipmentResponseWrappers = new ArrayList<>();
-        List<Orders> orders = ordersRepository.findAll().stream().filter(order -> order.getAssignment() != null
-                && order.getAssignment().getStatus().getName().equalsIgnoreCase("ASIGNADO")).toList();
+        LocalDateTime now = LocalDateTime.now();
+
+        LocalDateTime startDate = now.with(QuickDropUtils.closeTime);
+        LocalDateTime endDate = startDate.plusDays(1);
+
+        List<Orders> orders = ordersRepository.findAll().stream()
+                .filter(order -> order.getAssignment() != null
+                        && "ASIGNADO".equalsIgnoreCase(order.getAssignment().getStatus().getName())
+                        && order.getAssignment().getCreatedAt().isAfter(startDate)
+                        && order.getAssignment().getCreatedAt().isBefore(endDate))
+                .toList();
 
         for (Orders order : orders) {
             ShipmentResponseWrapper shipmentResponseWrapper = new ShipmentResponseWrapper();
