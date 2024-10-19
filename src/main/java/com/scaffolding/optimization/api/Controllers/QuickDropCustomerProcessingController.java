@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -35,7 +36,7 @@ public class QuickDropCustomerProcessingController {
         Roles role = roleService.findByName(QuickDropConstants.QuickDropRoles.CUSTOMER.getRole());
 
         userEntity.setAlias(customerDTO.getUser().getAlias());
-        userEntity.setEmail(customerDTO.getUser().getEmail());
+        userEntity.setEmail(customerDTO.getUser().getEmail().toLowerCase());
 
         if (ObjectUtils.isEmpty(customerDTO.getUser().getPassword())) {
             String password = QuickDropUtils.generateRandomPassword();

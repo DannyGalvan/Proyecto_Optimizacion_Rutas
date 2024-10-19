@@ -32,6 +32,7 @@ public class UserService extends CrudServiceProcessingController<Users> implemen
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        email= email.toLowerCase();
         Users userEntity = userRepository.findByEmail(email);
 
         if (userEntity == null) {
