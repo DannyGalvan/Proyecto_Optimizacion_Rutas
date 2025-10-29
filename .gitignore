@@ -41,7 +41,7 @@ build/
 
 ### application properties ###
 **/src/main/resources/application-dev.properties
-**/src/main/resources/application-prod.properties
+**/src/main/resources/application.prod.properties
 **/src/main/resources/application-example.properties
 
 
